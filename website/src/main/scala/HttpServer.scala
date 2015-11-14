@@ -14,9 +14,9 @@ trait HttpServer {
     implicit val ec = system.dispatcher
 
     def fullRoute = routes ~ complete(StatusCodes.NotFound)
-    val bindingFuture = Http().bindAndHandle(fullRoute, "0.0.0.0", 8080)
+    val bindingFuture = Http().bindAndHandle(fullRoute, "0.0.0.0", 9090)
 
-    println(s"Server online at http://0.0.0.0:8080")
+    println(s"Server online at http://0.0.0.0:9090")
 
     sys.addShutdownHook {
       bindingFuture
