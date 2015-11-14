@@ -4,5 +4,6 @@
 
 ###  Tasks
 
-- [ ] (Disk) Persisted write ahead logs
+- [ ] Persisted (on disk for now) write ahead logs
 - [ ] Distributed crawling layer with resilient resurrection
+- [ ] Full integration tests for failure cases
