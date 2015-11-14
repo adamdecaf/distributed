@@ -1,6 +1,6 @@
 import sbt._
 
-val commonSettings: Seq[Setting[_]] = Seq(
+lazy val commonSettings: Seq[Setting[_]] = Seq(
   organization := "org.decaf",
   version in ThisBuild := "1-SNAPSHOT",
   scalaVersion := "2.11.7",
@@ -17,13 +17,25 @@ val commonSettings: Seq[Setting[_]] = Seq(
   )
 )
 
-lazy val root = Project("root", file(".")).aggregate(common, crawler, server)
+lazy val httpServerSettings: Seq[Setting[_]] =
+  Seq(
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-http-experimental" % "2.0-M1",
+      "com.typesafe.akka" %% "akka-http-core-experimental" % "2.0-M1",
+      "com.typesafe.akka" %% "akka-http-testkit-experimental" % "2.0-M1" % "test"
+    )
+  )
+
+lazy val root = Project("root", file(".")).aggregate(common, crawler, server, website)
   .settings(publish := {},
             publishLocal := {})
+  .settings(commonSettings: _*)
 
 lazy val common = Project("common", file("./common"))
+  .settings(commonSettings: _*)
 
 lazy val crawler = Project("crawler", file("./crawler")).dependsOn(common)
+  .settings(commonSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-stream-experimental" % "2.0-M1"
@@ -31,10 +43,9 @@ lazy val crawler = Project("crawler", file("./crawler")).dependsOn(common)
   )
 
 lazy val server = Project("server", file("./server")).dependsOn(common)
-  .settings(
-    libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-http-experimental" % "2.0-M1",
-      "com.typesafe.akka" %% "akka-http-core-experimental" % "2.0-M1",
-      "com.typesafe.akka" %% "akka-http-testkit-experimental" % "2.0-M1" % "test"
-    )
-  )
+  .settings(commonSettings: _*)
+  .settings(httpServerSettings: _*)
+
+lazy val website = Project("website", file("./website")).dependsOn(common)
+  .settings(commonSettings: _*)
+  .settings(httpServerSettings: _*)
