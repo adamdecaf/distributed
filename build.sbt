@@ -5,6 +5,14 @@ lazy val commonSettings: Seq[Setting[_]] = Seq(
   version in ThisBuild := "1-SNAPSHOT",
   scalaVersion := "2.11.7",
   libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-actor" % "2.4.0",
+    "com.typesafe.akka" %% "akka-remote" % "2.4.0",
+    "com.typesafe.akka" %% "akka-slf4j" % "2.4.0",
+    "com.typesafe.akka" %% "akka-testkit" % "2.4.0" % "test",
+    "com.twitter" %% "chill" % "0.7.2",
+    "com.twitter" %% "chill-akka" % "0.7.2"
+  ),
+  libraryDependencies ++= Seq(
     "org.specs2" %% "specs2-core" % "3.5" % "test"
   ),
   scalacOptions ++= Seq(
